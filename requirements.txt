@@ -1,0 +1,5 @@
+sqlalchemy
+python-dotenv
+mysqlclient
+markdownify
+yatg
