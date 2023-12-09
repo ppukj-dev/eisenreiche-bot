@@ -3,11 +3,10 @@ from app.database import SessionLocal
 
 
 @contextmanager
-def session_scope():
+def session_get_scope():
     session = SessionLocal()
     try:
         yield session
-        session.commit()
     except Exception as e:
         session.rollback()
         raise
@@ -16,7 +15,7 @@ def session_scope():
 
 
 def find_ik_entity(entity_class, search_term):
-    with session_scope() as session:
+    with session_get_scope() as session:
         # Exact match query (case-insensitive)
         exact_match_result = session.query(entity_class).filter(
             entity_class.name.ilike(f'{search_term}')
