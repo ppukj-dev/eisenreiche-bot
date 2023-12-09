@@ -93,6 +93,27 @@ async def send_multiple_results(ctx, result):
         return
 
 
+@bot.command(name="ik-help")
+async def armor(ctx):
+    command_dict = {
+        "ability": "Ability",
+        "archetype": "Archetype",
+        "benefit": "Archetype Benefit",
+        "armor": "Armor",
+        "equipment": "Misc Equipment",
+        "mweapon": "Melee Weapon",
+        "rweapon": "Ranged Weapon",
+        "skill": "Skill",
+        "spell": "Spell"
+    }
+    description = f"Use `{config.PREFIX}command search_keyword` to do search."
+    embed = discord.Embed(title="IK-Bot Help", description=description)
+    for key, val in command_dict.items():
+        embed.add_field(value=f"{config.PREFIX}{key}", name=val)
+    await ctx.send(embed=embed)
+
+
+
 @bot.command(name="ability")
 async def ability(ctx, *, keyword):
     result = find_ik_entity(app.model.models.Ability, keyword)
@@ -192,5 +213,17 @@ async def armor(ctx, *, keyword):
         await send_multiple_results(ctx, result)
 
 
+# Make sure no command not found error logged.
+@bot.event
+async def on_command_error(ctx, error):
+    if isinstance(error, commands.CommandNotFound):
+        # Ignore CommandNotFound errors
+        pass
+    else:
+        # Log other errors
+        raise error
+
+
 def run_bot():
+    bot.remove_command('help')
     bot.run(config.DISCORD_TOKEN)
