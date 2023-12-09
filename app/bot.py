@@ -11,6 +11,7 @@ from app.repository.search import find_ik_entity
 intents = discord.Intents.all()
 bot = commands.Bot(command_prefix=config.PREFIX, intents=intents)
 
+
 @bot.event
 async def on_ready():
     print(f"Logged in as {bot.user.name}")
@@ -23,6 +24,8 @@ async def send_single_result(ctx, entry):
         embed.add_field(name="Prerequisites", value=entry.prerequisites, inline=True)
     if hasattr(entry, "archetype"):
         embed.add_field(name="Archetype", value=entry.archetype, inline=True)
+    if hasattr(entry, "stats"):
+        embed.add_field(name="Stats", value=entry.stats, inline=True)
     if hasattr(entry, "spell_cost"):
         embed.add_field(name="COST", value=entry.spell_cost, inline=True)
     if hasattr(entry, "range"):
@@ -135,15 +138,15 @@ async def ranged_weapon(ctx, *, keyword):
         await send_multiple_results(ctx, result)
 
 
-# @bot.command(name="skill")
-# async def skill(ctx, *, keyword):
-#     result = find_ik_entity(Skill, keyword)
-#     if len(result) <= 0:
-#         await ctx.send("No results found.")
-#     elif len(result) == 1:
-#         await send_single_result(ctx, result[0])
-#     else:
-#         await send_multiple_results(ctx, result)
+@bot.command(name="skill")
+async def skill(ctx, *, keyword):
+    result = find_ik_entity(Skill, keyword)
+    if len(result) <= 0:
+        await ctx.send("No results found.")
+    elif len(result) == 1:
+        await send_single_result(ctx, result[0])
+    else:
+        await send_multiple_results(ctx, result)
 
 
 def run_bot():
