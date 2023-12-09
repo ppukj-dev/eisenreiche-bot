@@ -72,3 +72,12 @@ class MeleeWeapon(Base):
     skill = Column("ikMeleeSkill", Text)
     mod = Column("ikMeleeMod", Text)
     pow = Column("ikMeleePow", Text)
+
+
+class Equipment(Base):
+    __tablename__ = 'tableIK_EquipMisc'
+    id = Column("ID", Integer, primary_key=True)
+    name = Column("ikEquipName", Text)
+    details = Column("ikEquipDescription", Text)
+    cost = Column("ikEquipCost", Text)
+    category = Column("ikEquipCategory", Text)

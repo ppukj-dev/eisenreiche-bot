@@ -5,7 +5,7 @@ import discord
 from discord.ext import commands
 from app.util.markdown import to_markdown
 import asyncio
-from app.model.models import Ability, Archetype, ArchetypeBenefit, Spell, Skill, RangedWeapon, MeleeWeapon
+from app.model.models import Ability, Archetype, ArchetypeBenefit, Spell, Skill, RangedWeapon, MeleeWeapon, Equipment
 from app.repository.search import find_ik_entity
 
 intents = discord.Intents.all()
@@ -48,6 +48,8 @@ async def send_single_result(ctx, entry):
         embed.add_field(name="Extreme Range", value=entry.range_extreme, inline=True)
     if hasattr(entry, "skill"):
         embed.add_field(name="Skill", value=entry.skill, inline=True)
+    if hasattr(entry, "category"):
+        embed.add_field(name="Category", value=entry.category, inline=True)
     await ctx.send(embed=embed)
 
 
@@ -152,6 +154,17 @@ async def melee_weapon(ctx, *, keyword):
 @bot.command(name="skill")
 async def skill(ctx, *, keyword):
     result = find_ik_entity(Skill, keyword)
+    if len(result) <= 0:
+        await ctx.send("No results found.")
+    elif len(result) == 1:
+        await send_single_result(ctx, result[0])
+    else:
+        await send_multiple_results(ctx, result)
+
+
+@bot.command(name="equipment")
+async def equipment(ctx, *, keyword):
+    result = find_ik_entity(Equipment, keyword)
     if len(result) <= 0:
         await ctx.send("No results found.")
     elif len(result) == 1:
