@@ -3,7 +3,7 @@
 import app.config as config
 import discord
 from discord.ext import commands
-from app.util.markdown import to_markdown
+from app.util.markdown import to_markdown, split_string_at_index
 import asyncio
 import app.model.models
 from app.repository.search import find_ik_entity
@@ -19,7 +19,8 @@ async def on_ready():
 
 async def send_single_result(ctx, entry):
     description = to_markdown(entry.details)
-    embed = discord.Embed(title=entry.name, description=description)
+    main, sub = split_string_at_index(text=description, max_length=4000)
+    embed = discord.Embed(title=entry.name, description=main)
     if hasattr(entry, "prerequisites"):
         embed.add_field(name="Prerequisites", value=entry.prerequisites, inline=True)
     if hasattr(entry, "archetype"):
@@ -59,6 +60,8 @@ async def send_single_result(ctx, entry):
     if hasattr(entry, "armor_mod"):
         embed.add_field(name="Armor Mod", value=entry.armor_mod, inline=True)
     await ctx.send(embed=embed)
+    if sub is not None:
+        await ctx.send(embed=discord.Embed(description=sub))
 
 
 async def send_multiple_results(ctx, result):
