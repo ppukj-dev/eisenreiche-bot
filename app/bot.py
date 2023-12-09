@@ -74,6 +74,8 @@ async def send_multiple_results(ctx, result):
             return
         chosen_index = int(followup_message.content) - 1
         entry = result[chosen_index]
+        await option_message.delete()
+        await followup_message.delete()
         await send_single_result(ctx, entry)
         return
 
