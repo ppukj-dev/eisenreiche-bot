@@ -5,21 +5,11 @@ import discord
 from discord.ext import commands
 from app.util.markdown import to_markdown
 import asyncio
-
-from app.repository.ability import AbilityRepository
-from app.repository.archetype import ArchetypeRepository
-from app.repository.skill import SkillRepository
-from app.repository.spell import SpellRepository
-from app.database import SessionLocal
+from app.model.models import Ability, Archetype, ArchetypeBenefit, Spell, Skill
+from app.repository.search import find_ik_entity
 
 intents = discord.Intents.all()
 bot = commands.Bot(command_prefix=config.PREFIX, intents=intents)
-
-ability_repo = AbilityRepository(SessionLocal())
-archetype_repo = ArchetypeRepository(SessionLocal())
-skill_repo = SkillRepository(SessionLocal())
-spell_repo = SpellRepository(SessionLocal())
-
 
 @bot.event
 async def on_ready():
@@ -82,7 +72,7 @@ async def send_multiple_results(ctx, result):
 
 @bot.command(name="ability")
 async def ability(ctx, *, keyword):
-    result = ability_repo.find_ik_ability(keyword)
+    result = find_ik_entity(Ability, keyword)
     if len(result) <= 0:
         await ctx.send("No results found.")
     elif len(result) == 1:
@@ -93,7 +83,7 @@ async def ability(ctx, *, keyword):
 
 @bot.command(name="archetype")
 async def archetype(ctx, *, keyword):
-    result = archetype_repo.find_ik_archetype(keyword)
+    result = find_ik_entity(Archetype, keyword)
     if len(result) <= 0:
         await ctx.send("No results found.")
     elif len(result) == 1:
@@ -104,7 +94,7 @@ async def archetype(ctx, *, keyword):
 
 @bot.command(name="archetype_benefit", aliases=["benefit"])
 async def archetype(ctx, *, keyword):
-    result = archetype_repo.find_ik_archetype_benefit(keyword)
+    result = find_ik_entity(ArchetypeBenefit, keyword)
     if len(result) <= 0:
         await ctx.send("No results found.")
     elif len(result) == 1:
@@ -115,7 +105,7 @@ async def archetype(ctx, *, keyword):
 
 @bot.command(name="spell")
 async def spell(ctx, *, keyword):
-    result = spell_repo.find_ik_spell(keyword)
+    result = find_ik_entity(Spell, keyword)
     if len(result) <= 0:
         await ctx.send("No results found.")
     elif len(result) == 1:
@@ -126,7 +116,7 @@ async def spell(ctx, *, keyword):
 
 # @bot.command(name="skill")
 # async def skill(ctx, *, keyword):
-#     result = skill_repo.find_ik_skill(keyword)
+#     result = find_ik_entity(Skill, keyword)
 #     if len(result) <= 0:
 #         await ctx.send("No results found.")
 #     elif len(result) == 1:
