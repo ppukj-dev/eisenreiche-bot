@@ -81,3 +81,15 @@ class Equipment(Base):
     details = Column("ikEquipDescription", Text)
     cost = Column("ikEquipCost", Text)
     category = Column("ikEquipCategory", Text)
+
+
+class Armor(Base):
+    __tablename__ = 'tableIK_EquipArmor'
+    id = Column("ID", Integer, primary_key=True)
+    name = Column("ikArmorName", Text)
+    details = Column("ikArmorDescription", Text)
+    cost = Column("ikArmorCost", Text)
+    type = Column("ikArmorType", Text)
+    speed_mod = Column("ikArmorSpd", Text)
+    defense_mod = Column("ikArmorDef", Text)
+    armor_mod = Column("ikArmorArm", Text)

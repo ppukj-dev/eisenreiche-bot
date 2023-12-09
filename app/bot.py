@@ -5,7 +5,7 @@ import discord
 from discord.ext import commands
 from app.util.markdown import to_markdown
 import asyncio
-from app.model.models import Ability, Archetype, ArchetypeBenefit, Spell, Skill, RangedWeapon, MeleeWeapon, Equipment
+import app.model.models
 from app.repository.search import find_ik_entity
 
 intents = discord.Intents.all()
@@ -50,6 +50,14 @@ async def send_single_result(ctx, entry):
         embed.add_field(name="Skill", value=entry.skill, inline=True)
     if hasattr(entry, "category"):
         embed.add_field(name="Category", value=entry.category, inline=True)
+    if hasattr(entry, "type"):
+        embed.add_field(name="Type", value=entry.type, inline=True)
+    if hasattr(entry, "speed_mod"):
+        embed.add_field(name="Speed Mod", value=entry.speed_mod, inline=True)
+    if hasattr(entry, "defense_mod"):
+        embed.add_field(name="Defense Mod", value=entry.defense_mod, inline=True)
+    if hasattr(entry, "armor_mod"):
+        embed.add_field(name="Armor Mod", value=entry.armor_mod, inline=True)
     await ctx.send(embed=embed)
 
 
@@ -87,7 +95,7 @@ async def send_multiple_results(ctx, result):
 
 @bot.command(name="ability")
 async def ability(ctx, *, keyword):
-    result = find_ik_entity(Ability, keyword)
+    result = find_ik_entity(app.model.models.Ability, keyword)
     if len(result) <= 0:
         await ctx.send("No results found.")
     elif len(result) == 1:
@@ -98,7 +106,7 @@ async def ability(ctx, *, keyword):
 
 @bot.command(name="archetype")
 async def archetype(ctx, *, keyword):
-    result = find_ik_entity(Archetype, keyword)
+    result = find_ik_entity(app.model.models.Archetype, keyword)
     if len(result) <= 0:
         await ctx.send("No results found.")
     elif len(result) == 1:
@@ -109,7 +117,7 @@ async def archetype(ctx, *, keyword):
 
 @bot.command(name="archetype_benefit", aliases=["benefit"])
 async def archetype(ctx, *, keyword):
-    result = find_ik_entity(ArchetypeBenefit, keyword)
+    result = find_ik_entity(app.model.models.ArchetypeBenefit, keyword)
     if len(result) <= 0:
         await ctx.send("No results found.")
     elif len(result) == 1:
@@ -120,7 +128,7 @@ async def archetype(ctx, *, keyword):
 
 @bot.command(name="spell")
 async def spell(ctx, *, keyword):
-    result = find_ik_entity(Spell, keyword)
+    result = find_ik_entity(app.model.models.Spell, keyword)
     if len(result) <= 0:
         await ctx.send("No results found.")
     elif len(result) == 1:
@@ -131,7 +139,7 @@ async def spell(ctx, *, keyword):
 
 @bot.command(name="ranged_weapon", aliases=["rweapon"])
 async def ranged_weapon(ctx, *, keyword):
-    result = find_ik_entity(RangedWeapon, keyword)
+    result = find_ik_entity(app.model.models.RangedWeapon, keyword)
     if len(result) <= 0:
         await ctx.send("No results found.")
     elif len(result) == 1:
@@ -142,7 +150,7 @@ async def ranged_weapon(ctx, *, keyword):
 
 @bot.command(name="melee_weapon", aliases=["mweapon"])
 async def melee_weapon(ctx, *, keyword):
-    result = find_ik_entity(MeleeWeapon, keyword)
+    result = find_ik_entity(app.model.models.MeleeWeapon, keyword)
     if len(result) <= 0:
         await ctx.send("No results found.")
     elif len(result) == 1:
@@ -153,7 +161,7 @@ async def melee_weapon(ctx, *, keyword):
 
 @bot.command(name="skill")
 async def skill(ctx, *, keyword):
-    result = find_ik_entity(Skill, keyword)
+    result = find_ik_entity(app.model.models.Skill, keyword)
     if len(result) <= 0:
         await ctx.send("No results found.")
     elif len(result) == 1:
@@ -164,7 +172,18 @@ async def skill(ctx, *, keyword):
 
 @bot.command(name="equipment")
 async def equipment(ctx, *, keyword):
-    result = find_ik_entity(Equipment, keyword)
+    result = find_ik_entity(app.model.models.Equipment, keyword)
+    if len(result) <= 0:
+        await ctx.send("No results found.")
+    elif len(result) == 1:
+        await send_single_result(ctx, result[0])
+    else:
+        await send_multiple_results(ctx, result)
+
+
+@bot.command(name="armor")
+async def armor(ctx, *, keyword):
+    result = find_ik_entity(app.model.models.Armor, keyword)
     if len(result) <= 0:
         await ctx.send("No results found.")
     elif len(result) == 1:
