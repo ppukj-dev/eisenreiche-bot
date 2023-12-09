@@ -61,3 +61,14 @@ class RangedWeapon(Base):
     mod = Column("ikRangedMod", Text)
     pow = Column("ikRangedPow", Text)
     aoe = Column("ikRangedAoe", Text)
+
+
+class MeleeWeapon(Base):
+    __tablename__ = 'tableIK_EquipMelee'
+    id = Column("ID", Integer, primary_key=True)
+    name = Column("ikMeleeName", Text)
+    details = Column("ikMeleeDescription", Text)
+    cost = Column("ikMeleeCost", Text)
+    skill = Column("ikMeleeSkill", Text)
+    mod = Column("ikMeleeMod", Text)
+    pow = Column("ikMeleePow", Text)

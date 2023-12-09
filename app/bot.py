@@ -5,7 +5,7 @@ import discord
 from discord.ext import commands
 from app.util.markdown import to_markdown
 import asyncio
-from app.model.models import Ability, Archetype, ArchetypeBenefit, Spell, Skill, RangedWeapon
+from app.model.models import Ability, Archetype, ArchetypeBenefit, Spell, Skill, RangedWeapon, MeleeWeapon
 from app.repository.search import find_ik_entity
 
 intents = discord.Intents.all()
@@ -39,7 +39,7 @@ async def send_single_result(ctx, entry):
     if hasattr(entry, "offense"):
         embed.add_field(name="OFF", value=entry.offense, inline=True)
     if hasattr(entry, "cost"):
-        embed.add_field(name="Cost", value=entry.cost, inline=True)
+        embed.add_field(name="Cost", value=entry.cost + " gc", inline=True)
     if hasattr(entry, "ammo"):
         embed.add_field(name="Ammo", value=entry.ammo, inline=True)
     if hasattr(entry, "range_effective"):
@@ -130,6 +130,17 @@ async def spell(ctx, *, keyword):
 @bot.command(name="ranged_weapon", aliases=["rweapon"])
 async def ranged_weapon(ctx, *, keyword):
     result = find_ik_entity(RangedWeapon, keyword)
+    if len(result) <= 0:
+        await ctx.send("No results found.")
+    elif len(result) == 1:
+        await send_single_result(ctx, result[0])
+    else:
+        await send_multiple_results(ctx, result)
+
+
+@bot.command(name="melee_weapon", aliases=["mweapon"])
+async def melee_weapon(ctx, *, keyword):
+    result = find_ik_entity(MeleeWeapon, keyword)
     if len(result) <= 0:
         await ctx.send("No results found.")
     elif len(result) == 1:
