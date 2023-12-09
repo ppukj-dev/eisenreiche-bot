@@ -5,7 +5,7 @@ import discord
 from discord.ext import commands
 from app.util.markdown import to_markdown
 import asyncio
-from app.model.models import Ability, Archetype, ArchetypeBenefit, Spell, Skill
+from app.model.models import Ability, Archetype, ArchetypeBenefit, Spell, Skill, RangedWeapon
 from app.repository.search import find_ik_entity
 
 intents = discord.Intents.all()
@@ -35,6 +35,16 @@ async def send_single_result(ctx, entry):
         embed.add_field(name="UP", value=entry.upkeep, inline=True)
     if hasattr(entry, "offense"):
         embed.add_field(name="OFF", value=entry.offense, inline=True)
+    if hasattr(entry, "cost"):
+        embed.add_field(name="Cost", value=entry.cost, inline=True)
+    if hasattr(entry, "ammo"):
+        embed.add_field(name="Ammo", value=entry.ammo, inline=True)
+    if hasattr(entry, "range_effective"):
+        embed.add_field(name="Effective Range", value=entry.range_effective, inline=True)
+    if hasattr(entry, "range_extreme"):
+        embed.add_field(name="Extreme Range", value=entry.range_extreme, inline=True)
+    if hasattr(entry, "skill"):
+        embed.add_field(name="Skill", value=entry.skill, inline=True)
     await ctx.send(embed=embed)
 
 
@@ -106,6 +116,17 @@ async def archetype(ctx, *, keyword):
 @bot.command(name="spell")
 async def spell(ctx, *, keyword):
     result = find_ik_entity(Spell, keyword)
+    if len(result) <= 0:
+        await ctx.send("No results found.")
+    elif len(result) == 1:
+        await send_single_result(ctx, result[0])
+    else:
+        await send_multiple_results(ctx, result)
+
+
+@bot.command(name="ranged_weapon", aliases=["rweapon"])
+async def ranged_weapon(ctx, *, keyword):
+    result = find_ik_entity(RangedWeapon, keyword)
     if len(result) <= 0:
         await ctx.send("No results found.")
     elif len(result) == 1:

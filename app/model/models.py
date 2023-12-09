@@ -46,3 +46,18 @@ class Spell(Base):
     pow = Column("ikSpellPow", Text)
     upkeep = Column("ikSpellUp", Text)
     offense = Column("ikSpellOff", Text)
+
+
+class RangedWeapon(Base):
+    __tablename__ = 'tableIK_EquipRanged'
+    id = Column("ID", Integer, primary_key=True)
+    name = Column("ikRangedName", Text)
+    details = Column("ikRangedDescription", Text)
+    cost = Column("ikRangedCost", Text)
+    ammo = Column("ikRangedAmmo", Text)
+    range_effective = Column("ikRangedEffective", Text)
+    range_extreme = Column("ikRangedExtreme", Text)
+    skill = Column("ikRangedSkill", Text)
+    mod = Column("ikRangedMod", Text)
+    pow = Column("ikRangedPow", Text)
+    aoe = Column("ikRangedAoe", Text)
