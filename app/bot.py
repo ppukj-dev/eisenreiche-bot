@@ -116,7 +116,6 @@ async def armor(ctx):
     await ctx.send(embed=embed)
 
 
-
 @bot.command(name="ability")
 async def ability(ctx, *, keyword):
     result = find_ik_entity(app.model.models.Ability, keyword)
