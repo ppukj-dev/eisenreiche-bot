@@ -14,11 +14,12 @@ SessionLocal = sessionmaker(autocommit=False, expire_on_commit=False, autoflush=
 @contextmanager
 def session_scope():
     session = SessionLocal()
+    session.begin()
     try:
         yield session
     except SQLAlchemyError as e:
         session.rollback()
-        raise
+        raise e
     else:
         session.commit()
     finally:
