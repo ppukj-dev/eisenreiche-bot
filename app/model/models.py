@@ -104,3 +104,11 @@ class Mechanika(Base):
     category = Column("ikMechanikaCategory", Text)
     power = Column("ikMechanikaPowerInt", Text)
     slot = Column("ikMechanikaSlot", Text)
+
+
+class Alchemy(Base):
+    __tablename__ = 'tableIK_EquipAlchemyProduct'
+    id = Column("ID", Integer, primary_key=True)
+    name = Column("ikAlcProdName", Text)
+    details = Column("ikAlcProdDesc", Text)
+    cost = Column("ikAlcProdCost", Text)

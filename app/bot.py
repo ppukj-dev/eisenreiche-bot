@@ -114,7 +114,8 @@ async def armor(ctx):
         "rweapon": "Ranged Weapon",
         "skill": "Skill",
         "spell": "Spell",
-        "mechanika": "Mechanika"
+        "mechanika": "Mechanika",
+        "alchemy": "Alchemy Product"
     }
     description = f"Use `{config.PREFIX}command search_keyword` to do search."
     embed = discord.Embed(title="IK-Bot Help", description=description)
@@ -225,6 +226,17 @@ async def armor(ctx, *, keyword):
 @bot.command(name="mechanika")
 async def mechanika(ctx, *, keyword):
     result = find_ik_entity(app.model.models.Mechanika, keyword)
+    if len(result) <= 0:
+        await ctx.send("No results found.")
+    elif len(result) == 1:
+        await send_single_result(ctx, result[0])
+    else:
+        await send_multiple_results(ctx, result)
+
+
+@bot.command(name="alchemy")
+async def alchemy(ctx, *, keyword):
+    result = find_ik_entity(app.model.models.Alchemy, keyword)
     if len(result) <= 0:
         await ctx.send("No results found.")
     elif len(result) == 1:
