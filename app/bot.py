@@ -61,6 +61,10 @@ async def send_single_result(ctx, entry):
         embed.add_field(name="Armor Mod", value=entry.armor_mod, inline=True)
     if hasattr(entry, "mod"):
         embed.add_field(name="Mod", value=entry.mod, inline=True)
+    if hasattr(entry, "slot"):
+        embed.add_field(name="Slot", value=entry.slot, inline=True)
+    if hasattr(entry, "power"):
+        embed.add_field(name="Power", value=entry.power, inline=True)
     await ctx.send(embed=embed)
     if sub is not None:
         await ctx.send(embed=discord.Embed(description=sub))
@@ -109,7 +113,8 @@ async def armor(ctx):
         "mweapon": "Melee Weapon",
         "rweapon": "Ranged Weapon",
         "skill": "Skill",
-        "spell": "Spell"
+        "spell": "Spell",
+        "mechanika": "Mechanika"
     }
     description = f"Use `{config.PREFIX}command search_keyword` to do search."
     embed = discord.Embed(title="IK-Bot Help", description=description)
@@ -209,6 +214,17 @@ async def equipment(ctx, *, keyword):
 @bot.command(name="armor")
 async def armor(ctx, *, keyword):
     result = find_ik_entity(app.model.models.Armor, keyword)
+    if len(result) <= 0:
+        await ctx.send("No results found.")
+    elif len(result) == 1:
+        await send_single_result(ctx, result[0])
+    else:
+        await send_multiple_results(ctx, result)
+
+
+@bot.command(name="mechanika")
+async def mechanika(ctx, *, keyword):
+    result = find_ik_entity(app.model.models.Mechanika, keyword)
     if len(result) <= 0:
         await ctx.send("No results found.")
     elif len(result) == 1:

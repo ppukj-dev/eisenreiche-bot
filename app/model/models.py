@@ -93,3 +93,14 @@ class Armor(Base):
     speed_mod = Column("ikArmorSpd", Text)
     defense_mod = Column("ikArmorDef", Text)
     armor_mod = Column("ikArmorArm", Text)
+
+
+class Mechanika(Base):
+    __tablename__ = 'tableIK_EquipMechanika'
+    id = Column("ID", Integer, primary_key=True)
+    name = Column("ikMechanikaName", Text)
+    details = Column("ikMechanikaDescription", Text)
+    cost = Column("ikMechanikaCost", Text)
+    category = Column("ikMechanikaCategory", Text)
+    power = Column("ikMechanikaPowerInt", Text)
+    slot = Column("ikMechanikaSlot", Text)
