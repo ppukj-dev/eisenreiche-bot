@@ -59,6 +59,8 @@ async def send_single_result(ctx, entry):
         embed.add_field(name="Defense Mod", value=entry.defense_mod, inline=True)
     if hasattr(entry, "armor_mod"):
         embed.add_field(name="Armor Mod", value=entry.armor_mod, inline=True)
+    if hasattr(entry, "mod"):
+        embed.add_field(name="Mod", value=entry.mod, inline=True)
     await ctx.send(embed=embed)
     if sub is not None:
         await ctx.send(embed=discord.Embed(description=sub))
